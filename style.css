@@ -1,0 +1,345 @@
+/* ── RESET & BASE ── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #07080f;
+  color: #eef0ff;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  min-height: 100vh;
+}
+
+/* ── CONTAINER ── */
+.container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+}
+
+/* ── HEADER ── */
+h1 {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 10px;
+}
+
+h1 span {
+  color: #5b6ef5;
+}
+
+.subtitle {
+  color: #9498c0;
+  font-size: 15px;
+  margin-bottom: 32px;
+}
+
+/* ── CARDS ── */
+.card {
+  background: #0f1020;
+  border: 1px solid rgba(120, 130, 255, 0.1);
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 16px;
+}
+
+.card h2 {
+  font-size: 13px;
+  font-family: monospace;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #5b6ef5;
+  margin-bottom: 18px;
+}
+
+/* ── DROP ZONE ── */
+.dropzone {
+  border: 2px dashed rgba(91, 110, 245, 0.35);
+  border-radius: 12px;
+  padding: 44px 20px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.dropzone:hover {
+  border-color: #5b6ef5;
+  background: rgba(91, 110, 245, 0.06);
+}
+
+/* Hide the default file input — the whole div is clickable */
+.dropzone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.drop-icon {
+  font-size: 44px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.drop-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.drop-hint {
+  color: #6b7099;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+/* ── FILE INFO (shown after upload) ── */
+.file-info {
+  display: none;             /* hidden by default — JS shows it */
+  align-items: center;
+  gap: 12px;
+  background: #181930;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 14px;
+}
+
+.file-info.show {
+  display: flex;             /* JS adds this class to reveal it */
+}
+
+.file-info #fileIcon {
+  font-size: 28px;
+}
+
+.file-info #fileName {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.file-info #fileSize {
+  font-family: monospace;
+  font-size: 11px;
+  color: #9498c0;
+  margin-top: 3px;
+}
+
+.file-info button {
+  background: none;
+  border: none;
+  color: #6b7099;
+  font-size: 18px;
+  cursor: pointer;
+  margin-left: auto;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.file-info button:hover {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.1);
+}
+
+/* ── SIZE INPUT ── */
+.size-row {
+  display: flex;
+  gap: 10px;
+}
+
+.size-row input,
+.size-row select {
+  background: #181930;
+  border: 1px solid rgba(120, 130, 255, 0.1);
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: #eef0ff;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.size-row input {
+  flex: 1;
+  font-family: monospace;
+}
+
+.size-row select {
+  min-width: 140px;
+  cursor: pointer;
+}
+
+.size-row input:focus,
+.size-row select:focus {
+  border-color: #5b6ef5;
+}
+
+.size-display {
+  margin-top: 10px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #34d399;
+  display: none;   /* shown by JS when user types a value */
+}
+
+.size-display.show {
+  display: block;
+}
+
+/* ── FORMAT BUTTONS ── */
+.format-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 10px;
+}
+
+.fmt-btn {
+  background: #181930;
+  border: 1px solid rgba(120, 130, 255, 0.1);
+  border-radius: 10px;
+  padding: 14px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.fmt-btn:hover {
+  border-color: rgba(120, 130, 255, 0.3);
+  background: #1f2040;
+  transform: translateY(-2px);
+}
+
+.fmt-btn.active {
+  border-color: #5b6ef5;
+  background: rgba(91, 110, 245, 0.14);
+  box-shadow: 0 0 12px rgba(91, 110, 245, 0.2);
+}
+
+/* ── CONVERT BUTTON ── */
+.convert-btn {
+  width: 100%;
+  padding: 17px;
+  background: #5b6ef5;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.convert-btn:hover {
+  background: #6b7ef8;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(91, 110, 245, 0.25);
+}
+
+.convert-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── PROGRESS BAR ── */
+.progress {
+  height: 6px;
+  background: #1f2040;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-top: 16px;
+  display: none;   /* shown by JS during conversion */
+}
+
+.progress.show {
+  display: block;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #5b6ef5;
+  border-radius: 99px;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-family: monospace;
+  font-size: 12px;
+  color: #9498c0;
+  margin-top: 8px;
+}
+
+/* ── RESULT AREA ── */
+.result {
+  display: none;   /* shown by JS when done */
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  background: rgba(52, 211, 153, 0.07);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-top: 16px;
+}
+
+.result.show {
+  display: flex;
+}
+
+.result #resultName {
+  font-weight: 600;
+  font-size: 14px;
+  color: #34d399;
+}
+
+.result #resultSize {
+  font-family: monospace;
+  font-size: 11px;
+  color: #9498c0;
+  margin-top: 3px;
+}
+
+.download-btn {
+  background: #34d399;
+  color: #07080f;
+  border: none;
+  border-radius: 9px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  margin-left: auto;
+  transition: all 0.2s;
+}
+
+.download-btn:hover {
+  background: #5eead4;
+  transform: translateY(-1px);
+}
+
+/* ── ERROR ── */
+.error {
+  display: none;
+  margin-top: 14px;
+  background: rgba(248, 113, 113, 0.07);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #f87171;
+}
+
+.error.show {
+  display: block;
+}

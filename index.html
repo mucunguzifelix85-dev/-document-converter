@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocShift - Document Converter</title>
+
+  <!-- Link your CSS file -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Load SheetJS library (for Excel/CSV conversion) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+    <h1>DocShift <span>Document Converter</span></h1>
+    <p class="subtitle">Convert files between PDF, DOCX, XLSX, CSV, TXT, JPG, PNG</p>
+
+    <!-- STEP 1: Upload file -->
+    <div class="card">
+      <h2>Step 1 — Upload your file</h2>
+      <div class="dropzone" id="dropzone">
+        <input type="file" id="fileInput"
+          accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.txt,.csv">
+        <span class="drop-icon">📂</span>
+        <p class="drop-title">Drop your file here or click to browse</p>
+        <p class="drop-hint">PDF · DOCX · XLSX · JPG · PNG · TXT · CSV</p>
+      </div>
+
+      <!-- Shows file name after upload -->
+      <div class="file-info" id="fileInfo">
+        <span id="fileIcon">📄</span>
+        <div>
+          <p id="fileName">No file selected</p>
+          <p id="fileSize">—</p>
+        </div>
+        <button id="removeFile">✕</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Target size -->
+    <div class="card">
+      <h2>Step 2 — Target output size (optional)</h2>
+      <div class="size-row">
+        <input type="number" id="sizeValue" placeholder="e.g. 500" min="1">
+        <select id="sizeUnit">
+          <option value="B">B — Bytes</option>
+          <option value="KB" selected>KB — Kilobytes</option>
+          <option value="MB">MB — Megabytes</option>
+          <option value="GB">GB — Gigabytes</option>
+        </select>
+      </div>
+      <p class="size-display" id="sizeDisplay"></p>
+    </div>
+
+    <!-- STEP 3: Choose format -->
+    <div class="card">
+      <h2>Step 3 — Choose output format</h2>
+      <div class="format-grid" id="formatGrid">
+        <div class="fmt-btn" data-fmt="pdf">📕<br><strong>PDF</strong><br><small>Portable</small></div>
+        <div class="fmt-btn" data-fmt="docx">📘<br><strong>DOCX</strong><br><small>Word</small></div>
+        <div class="fmt-btn" data-fmt="xlsx">📗<br><strong>XLSX</strong><br><small>Excel</small></div>
+        <div class="fmt-btn" data-fmt="jpg">🖼️<br><strong>JPG</strong><br><small>Image</small></div>
+        <div class="fmt-btn" data-fmt="png">🌅<br><strong>PNG</strong><br><small>Lossless</small></div>
+        <div class="fmt-btn" data-fmt="txt">📝<br><strong>TXT</strong><br><small>Plain text</small></div>
+        <div class="fmt-btn" data-fmt="csv">📊<br><strong>CSV</strong><br><small>Spreadsheet</small></div>
+      </div>
+    </div>
+
+    <!-- STEP 4: Convert -->
+    <div class="card">
+      <h2>Step 4 — Convert &amp; Download</h2>
+      <button class="convert-btn" id="convertBtn" disabled>
+        Select a file and format first
+      </button>
+
+      <!-- Progress bar -->
+      <div class="progress" id="progress">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <p class="progress-text" id="progressText"></p>
+
+      <!-- Result download -->
+      <div class="result" id="result">
+        <span>✅</span>
+        <div>
+          <p id="resultName">—</p>
+          <p id="resultSize">—</p>
+        </div>
+        <a id="downloadLink" href="#" download class="download-btn">⬇ Download</a>
+      </div>
+
+      <!-- Error message -->
+      <p class="error" id="errorMsg"></p>
+    </div>
+
+  </div><!-- end .container -->
+
+  <!-- Link your JavaScript file (must be at bottom) -->
+  <script src="script.js"></script>
+
+</body>
+</html>
