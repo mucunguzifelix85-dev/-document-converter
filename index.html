@@ -3,104 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DocShift - Document Converter</title>
-
-  <!-- Link your CSS file -->
+  <title>FileSquish — File Compressor</title>
   <link rel="stylesheet" href="style.css">
-
-  <!-- Load SheetJS library (for Excel/CSV conversion) -->
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-
   <div class="container">
 
-    <!-- Header -->
-    <h1>DocShift <span>Document Converter</span></h1>
-    <p class="subtitle">Convert files between PDF, DOCX, XLSX, CSV, TXT, JPG, PNG</p>
+    <header>
+      <h1>File<span>Squish</span></h1>
+      <p class="subtitle">Compress any file — Images, PDF, DOCX — choose Low, Medium or High</p>
+    </header>
 
-    <!-- STEP 1: Upload file -->
+    <!-- STEP 1 -->
     <div class="card">
       <h2>Step 1 — Upload your file</h2>
       <div class="dropzone" id="dropzone">
-        <input type="file" id="fileInput"
-          accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.txt,.csv">
+        <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.webp,.pdf,.docx,.txt,.csv,.xlsx,.xls,.zip">
         <span class="drop-icon">📂</span>
         <p class="drop-title">Drop your file here or click to browse</p>
-        <p class="drop-hint">PDF · DOCX · XLSX · JPG · PNG · TXT · CSV</p>
+        <p class="drop-hint">JPG · PNG · PDF · DOCX · TXT · CSV · XLSX · ZIP</p>
       </div>
-
-      <!-- Shows file name after upload -->
       <div class="file-info" id="fileInfo">
         <span id="fileIcon">📄</span>
-        <div>
-          <p id="fileName">No file selected</p>
+        <div class="file-details">
+          <p id="fileName">—</p>
           <p id="fileSize">—</p>
         </div>
         <button id="removeFile">✕</button>
       </div>
     </div>
 
-    <!-- STEP 2: Target size -->
+    <!-- STEP 2 -->
     <div class="card">
-      <h2>Step 2 — Target output size (optional)</h2>
-      <div class="size-row">
-        <input type="number" id="sizeValue" placeholder="e.g. 500" min="1">
-        <select id="sizeUnit">
-          <option value="B">B — Bytes</option>
-          <option value="KB" selected>KB — Kilobytes</option>
-          <option value="MB">MB — Megabytes</option>
-          <option value="GB">GB — Gigabytes</option>
-        </select>
-      </div>
-      <p class="size-display" id="sizeDisplay"></p>
-    </div>
-
-    <!-- STEP 3: Choose format -->
-    <div class="card">
-      <h2>Step 3 — Choose output format</h2>
-      <div class="format-grid" id="formatGrid">
-        <div class="fmt-btn" data-fmt="pdf">📕<br><strong>PDF</strong><br><small>Portable</small></div>
-        <div class="fmt-btn" data-fmt="docx">📘<br><strong>DOCX</strong><br><small>Word</small></div>
-        <div class="fmt-btn" data-fmt="xlsx">📗<br><strong>XLSX</strong><br><small>Excel</small></div>
-        <div class="fmt-btn" data-fmt="jpg">🖼️<br><strong>JPG</strong><br><small>Image</small></div>
-        <div class="fmt-btn" data-fmt="png">🌅<br><strong>PNG</strong><br><small>Lossless</small></div>
-        <div class="fmt-btn" data-fmt="txt">📝<br><strong>TXT</strong><br><small>Plain text</small></div>
-        <div class="fmt-btn" data-fmt="csv">📊<br><strong>CSV</strong><br><small>Spreadsheet</small></div>
-      </div>
-    </div>
-
-    <!-- STEP 4: Convert -->
-    <div class="card">
-      <h2>Step 4 — Convert &amp; Download</h2>
-      <button class="convert-btn" id="convertBtn" disabled>
-        Select a file and format first
-      </button>
-
-      <!-- Progress bar -->
-      <div class="progress" id="progress">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-      <p class="progress-text" id="progressText"></p>
-
-      <!-- Result download -->
-      <div class="result" id="result">
-        <span>✅</span>
-        <div>
-          <p id="resultName">—</p>
-          <p id="resultSize">—</p>
+      <h2>Step 2 — Choose compression level</h2>
+      <div class="level-grid">
+        <div class="level-btn" data-level="low">
+          <span class="level-icon">🟢</span>
+          <strong>Low</strong>
+          <p>Small reduction<br>Best quality</p>
+          <span class="level-badge">~30% smaller</span>
         </div>
-        <a id="downloadLink" href="#" download class="download-btn">⬇ Download</a>
+        <div class="level-btn" data-level="medium">
+          <span class="level-icon">🟡</span>
+          <strong>Medium</strong>
+          <p>Good balance<br>Good quality</p>
+          <span class="level-badge">~60% smaller</span>
+        </div>
+        <div class="level-btn" data-level="high">
+          <span class="level-icon">🔴</span>
+          <strong>High</strong>
+          <p>Maximum reduction<br>Lower quality</p>
+          <span class="level-badge">~80% smaller</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="card">
+      <h2>Step 3 — Compress &amp; Download</h2>
+      <button class="compress-btn" id="compressBtn" disabled>Select a file and level first</button>
+
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <p id="progressText">Processing...</p>
       </div>
 
-      <!-- Error message -->
+      <div class="result" id="result">
+        <div class="result-left">
+          <span>✅</span>
+          <div>
+            <p class="result-name" id="resultName">—</p>
+            <p class="result-stats" id="resultStats">—</p>
+          </div>
+        </div>
+        <a class="download-btn" id="downloadLink" href="#" download>⬇ Download</a>
+      </div>
+
+      <div class="comparison" id="comparison">
+        <div class="comp-box">
+          <p class="comp-label">Original</p>
+          <p class="comp-value" id="origSize">—</p>
+        </div>
+        <div class="comp-arrow">→</div>
+        <div class="comp-box">
+          <p class="comp-label">New size</p>
+          <p class="comp-value green" id="newSize">—</p>
+        </div>
+        <div class="comp-arrow">🎉</div>
+        <div class="comp-box">
+          <p class="comp-label">Saved</p>
+          <p class="comp-value highlight" id="savedSize">—</p>
+        </div>
+      </div>
+
       <p class="error" id="errorMsg"></p>
     </div>
 
-  </div><!-- end .container -->
-
-  <!-- Link your JavaScript file (must be at bottom) -->
+  </div>
   <script src="script.js"></script>
-
 </body>
 </html>
