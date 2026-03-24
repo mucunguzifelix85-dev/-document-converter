@@ -3,103 +3,192 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FileSquish — File Compressor</title>
+  <title>DocConverter — Convert & Compress Any File</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-  <div class="container">
+<div class="container">
 
-    <header>
-      <h1>File<span>Squish</span></h1>
-      <p class="subtitle">Compress any file — Images, PDF, DOCX — choose Low, Medium or High</p>
-    </header>
-
-    <!-- STEP 1 -->
-    <div class="card">
-      <h2>Step 1 — Upload your file</h2>
-      <div class="dropzone" id="dropzone">
-        <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.webp,.pdf,.docx,.txt,.csv,.xlsx,.xls,.zip">
-        <span class="drop-icon">📂</span>
-        <p class="drop-title">Drop your file here or click to browse</p>
-        <p class="drop-hint">JPG · PNG · PDF · DOCX · TXT · CSV · XLSX · ZIP</p>
-      </div>
-      <div class="file-info" id="fileInfo">
-        <span id="fileIcon">📄</span>
-        <div class="file-details">
-          <p id="fileName">—</p>
-          <p id="fileSize">—</p>
-        </div>
-        <button id="removeFile">✕</button>
-      </div>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">Doc<span>Converter</span></div>
+    <p class="tagline">Convert · Compress · Resize — Any File, Any Format</p>
+    <div class="format-pills">
+      <span>PDF</span><span>DOCX</span><span>XLSX</span><span>PPTX</span>
+      <span>JPG</span><span>PNG</span><span>MP3</span><span>MP4</span>
+      <span>TXT</span><span>CSV</span><span>ZIP</span><span>+ ALL</span>
     </div>
+  </header>
 
-    <!-- STEP 2 -->
-    <div class="card">
-      <h2>Step 2 — Choose compression level</h2>
-      <div class="level-grid">
-        <div class="level-btn" data-level="low">
-          <span class="level-icon">🟢</span>
-          <strong>Low</strong>
-          <p>Small reduction<br>Best quality</p>
-          <span class="level-badge">~30% smaller</span>
-        </div>
-        <div class="level-btn" data-level="medium">
-          <span class="level-icon">🟡</span>
-          <strong>Medium</strong>
-          <p>Good balance<br>Good quality</p>
-          <span class="level-badge">~60% smaller</span>
-        </div>
-        <div class="level-btn" data-level="high">
-          <span class="level-icon">🔴</span>
-          <strong>High</strong>
-          <p>Maximum reduction<br>Lower quality</p>
-          <span class="level-badge">~80% smaller</span>
-        </div>
-      </div>
+  <!-- STEP 1: UPLOAD -->
+  <div class="card">
+    <div class="step-label">01 — Upload your file</div>
+    <div class="dropzone" id="dropzone">
+      <input type="file" id="fileInput">
+      <div class="dz-icon">📂</div>
+      <div class="dz-title">Drop ANY file here or click to browse</div>
+      <div class="dz-hint">PDF · DOCX · XLSX · JPG · PNG · MP3 · MP4 · ZIP · TXT · CSV · and more</div>
     </div>
-
-    <!-- STEP 3 -->
-    <div class="card">
-      <h2>Step 3 — Compress &amp; Download</h2>
-      <button class="compress-btn" id="compressBtn" disabled>Select a file and level first</button>
-
-      <div class="progress-wrap" id="progressWrap">
-        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <p id="progressText">Processing...</p>
-      </div>
-
-      <div class="result" id="result">
-        <div class="result-left">
-          <span>✅</span>
-          <div>
-            <p class="result-name" id="resultName">—</p>
-            <p class="result-stats" id="resultStats">—</p>
-          </div>
-        </div>
-        <a class="download-btn" id="downloadLink" href="#" download>⬇ Download</a>
-      </div>
-
-      <div class="comparison" id="comparison">
-        <div class="comp-box">
-          <p class="comp-label">Original</p>
-          <p class="comp-value" id="origSize">—</p>
-        </div>
-        <div class="comp-arrow">→</div>
-        <div class="comp-box">
-          <p class="comp-label">New size</p>
-          <p class="comp-value green" id="newSize">—</p>
-        </div>
-        <div class="comp-arrow">🎉</div>
-        <div class="comp-box">
-          <p class="comp-label">Saved</p>
-          <p class="comp-value highlight" id="savedSize">—</p>
+    <div class="file-pill" id="filePill">
+      <div class="fp-icon" id="fpIcon">📄</div>
+      <div class="fp-info">
+        <p id="fpName">—</p>
+        <div class="fp-meta">
+          <span id="fpSize">—</span>
+          <span class="fp-badge" id="fpExt">—</span>
+          <span class="fp-badge fp-cat" id="fpCat">—</span>
         </div>
       </div>
-
-      <p class="error" id="errorMsg"></p>
+      <button class="fp-remove" id="fpRemove">✕</button>
     </div>
-
   </div>
-  <script src="script.js"></script>
+
+  <!-- STEP 2: CHOOSE WHAT TO DO -->
+  <div class="card">
+    <div class="step-label">02 — What do you want to do?</div>
+    <div class="mode-grid">
+      <div class="mode-btn" data-mode="compress">
+        <span class="mode-icon">🗜️</span>
+        <strong>Compress</strong>
+        <p>Make file smaller<br>Low / Medium / High</p>
+      </div>
+      <div class="mode-btn" data-mode="convert">
+        <span class="mode-icon">🔄</span>
+        <strong>Convert Format</strong>
+        <p>Change file type<br>PDF, DOCX, JPG…</p>
+      </div>
+      <div class="mode-btn" data-mode="resize">
+        <span class="mode-icon">📐</span>
+        <strong>Target Size</strong>
+        <p>Set exact size<br>e.g. 500KB or 2MB</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3A: COMPRESS OPTIONS -->
+  <div class="card option-card" id="card-compress">
+    <div class="step-label">03 — Choose compression level</div>
+    <div class="level-grid">
+      <div class="level-btn" data-level="low">
+        <span>🟢</span>
+        <strong>Low</strong>
+        <p>~30% smaller<br>Best quality</p>
+      </div>
+      <div class="level-btn" data-level="medium">
+        <span>🟡</span>
+        <strong>Medium</strong>
+        <p>~60% smaller<br>Good quality</p>
+      </div>
+      <div class="level-btn" data-level="high">
+        <span>🔴</span>
+        <strong>High</strong>
+        <p>~80% smaller<br>Lower quality</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3B: CONVERT FORMAT OPTIONS -->
+  <div class="card option-card" id="card-convert">
+    <div class="step-label">03 — Choose output format</div>
+    <div class="fmt-grid" id="fmtGrid">
+      <div class="fmt-btn" data-fmt="pdf">📕<br><strong>PDF</strong></div>
+      <div class="fmt-btn" data-fmt="docx">📘<br><strong>DOCX</strong></div>
+      <div class="fmt-btn" data-fmt="xlsx">📗<br><strong>XLSX</strong></div>
+      <div class="fmt-btn" data-fmt="txt">📝<br><strong>TXT</strong></div>
+      <div class="fmt-btn" data-fmt="csv">📊<br><strong>CSV</strong></div>
+      <div class="fmt-btn" data-fmt="jpg">🖼️<br><strong>JPG</strong></div>
+      <div class="fmt-btn" data-fmt="png">🌅<br><strong>PNG</strong></div>
+      <div class="fmt-btn" data-fmt="webp">🖼️<br><strong>WEBP</strong></div>
+      <div class="fmt-btn" data-fmt="zip">🗜️<br><strong>ZIP</strong></div>
+    </div>
+  </div>
+
+  <!-- STEP 3C: TARGET SIZE OPTIONS -->
+  <div class="card option-card" id="card-resize">
+    <div class="step-label">03 — Type your target size</div>
+    <p class="resize-hint">Enter the size you want the file to be:</p>
+    <div class="resize-row">
+      <input type="number" id="targetValue" placeholder="e.g. 500" min="1" step="any" class="size-input">
+      <select id="targetUnit" class="unit-sel">
+        <option value="B">B — Bytes</option>
+        <option value="KB" selected>KB — Kilobytes</option>
+        <option value="MB">MB — Megabytes</option>
+        <option value="GB">GB — Gigabytes</option>
+      </select>
+    </div>
+    <div class="size-examples">
+      <span onclick="setSize(100,'KB')">100 KB</span>
+      <span onclick="setSize(300,'KB')">300 KB</span>
+      <span onclick="setSize(1,'MB')">1 MB</span>
+      <span onclick="setSize(2,'MB')">2 MB</span>
+      <span onclick="setSize(5,'MB')">5 MB</span>
+      <span onclick="setSize(10,'MB')">10 MB</span>
+      <span onclick="setSize(1,'GB')">1 GB</span>
+    </div>
+    <div class="size-preview" id="sizePreview"></div>
+  </div>
+
+  <!-- STEP 4: ACTION BUTTON -->
+  <div class="card">
+    <div class="step-label">04 — Process &amp; Download</div>
+    <button class="action-btn" id="actionBtn" disabled>Select a file and choose an action</button>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <p id="progressText">Processing...</p>
+    </div>
+
+    <div class="result" id="result">
+      <div class="result-left">
+        <span class="result-icon">✅</span>
+        <div>
+          <p class="result-name" id="resultName">—</p>
+          <p class="result-sub"  id="resultSub">—</p>
+        </div>
+      </div>
+      <a class="dl-btn" id="dlLink" href="#" download>⬇ Download</a>
+    </div>
+
+    <div class="stats-row" id="statsRow">
+      <div class="stat-box">
+        <p class="stat-label">Original</p>
+        <p class="stat-val" id="statOrig">—</p>
+      </div>
+      <div class="stat-arrow">→</div>
+      <div class="stat-box">
+        <p class="stat-label">New size</p>
+        <p class="stat-val green" id="statNew">—</p>
+      </div>
+      <div class="stat-arrow">🎉</div>
+      <div class="stat-box">
+        <p class="stat-label">Saved</p>
+        <p class="stat-val yellow" id="statSaved">—</p>
+      </div>
+    </div>
+
+    <p class="error-msg" id="errorMsg"></p>
+  </div>
+
+  <!-- HOW IT WORKS TABLE -->
+  <div class="card">
+    <div class="step-label">Supported file types &amp; actions</div>
+    <div class="support-table">
+      <div class="st-row header"><span>File type</span><span>Compress</span><span>Convert to</span><span>Target size</span></div>
+      <div class="st-row"><span>🖼️ JPG / PNG / WEBP / GIF</span><span class="g">✅ Yes</span><span>JPG, PNG, WEBP</span><span class="g">✅ Yes</span></div>
+      <div class="st-row"><span>📄 PDF</span><span class="g">✅ Yes</span><span>TXT, ZIP</span><span class="g">✅ Yes</span></div>
+      <div class="st-row"><span>📘 DOCX / Word</span><span class="g">✅ Yes</span><span>TXT, ZIP</span><span class="g">✅ Yes</span></div>
+      <div class="st-row"><span>📗 XLSX / Excel</span><span class="g">✅ Yes</span><span>CSV, TXT</span><span class="g">✅ Yes</span></div>
+      <div class="st-row"><span>📊 CSV</span><span class="g">✅ Yes</span><span>XLSX, TXT</span><span class="g">✅ Yes</span></div>
+      <div class="st-row"><span>📝 TXT</span><span class="g">✅ Yes</span><span>DOCX, CSV</span><span class="g">✅ Yes</span></div>
+      <div class="st-row"><span>🎵 MP3 / Audio</span><span class="g">✅ Yes</span><span>ZIP</span><span class="g">✅ Yes</span></div>
+      <div class="st-row"><span>🎬 MP4 / Video</span><span class="g">✅ Yes</span><span>ZIP</span><span class="g">✅ Yes</span></div>
+      <div class="st-row"><span>🗜️ ZIP / RAR / 7Z</span><span class="g">✅ Yes</span><span>ZIP</span><span class="g">✅ Yes</span></div>
+      <div class="st-row"><span>📦 Any other file</span><span class="g">✅ Yes</span><span>ZIP</span><span class="g">✅ Yes</span></div>
+    </div>
+  </div>
+
+</div>
+<script src="script.js"></script>
 </body>
 </html>
