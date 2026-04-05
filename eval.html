@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post-Training Evaluation System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #5A5A5A;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Post-Training Evaluation System</h1>
+        <form id="evaluationForm">
+            <div class="question">
+                <label for="teacherName">Teacher's Name:</label>
+                <input type="text" id="teacherName" name="teacherName" required>
+            </div>
+            <div class="question">
+                <label for="studentName">Student's Name:</label>
+                <input type="text" id="studentName" name="studentName" required>
+            </div>
+            <div class="question">
+                <label for="feedback">Feedback:</label>
+                <textarea id="feedback" name="feedback" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="button">Submit Evaluation</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('evaluationForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent form submission
+            alert('Evaluation submitted successfully!');
+            // Here you can add code to send data to a server or process it further
+        });
+    </script>
+</body>
+</html>
